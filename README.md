@@ -81,7 +81,7 @@ From the project root, run the FastAPI/LangServe app defined in `Data-Ingestion/
 ```powershell
 cd "C:\Users\ybalasaraswa\OneDrive - OpenText\Desktop\deep learning\LangChain"
 .\.myvenv\Scripts\activate
-python .\Data-Ingestion\serve.py
+python .\LanguageTranslation\serve.py
 ```
 
 By default, the app starts on `http://localhost:8000`.
