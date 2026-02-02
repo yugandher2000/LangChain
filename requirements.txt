@@ -1,6 +1,5 @@
 langchain
 ipykernel
-python-dotenv # For loading environment variables from a .env file
 langchain-community # Community contributions for LangChain
 pypdf #to handle PDF files
 bs4 #to handle web scraping
