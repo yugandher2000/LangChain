@@ -1,0 +1,17 @@
+langchain
+ipykernel
+python-dotenv # For loading environment variables from a .env file
+langchain-community # Community contributions for LangChain
+pypdf #to handle PDF files
+bs4 #to handle web scraping
+langchain-text-splitters # to handle text splitting
+langchain-openai # to use OpenAI models with LangChain
+sentence-transformers # to use Huggingface sentence transformer models
+langchain-huggingface # to use Huggingface models with LangChain
+faiss-cpu # to use FAISS vector store
+langchain_groq # to use Groq models with LangChain
+langchain_core # Core components of LangChain
+fastapi
+uvicorn
+langserve
+sse_starlette
