@@ -6,10 +6,9 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 
-# Load environment variables from .env file (optional now)
 load_dotenv()
 
-# LangSmith Tracking (optional - only if API key is available)
+# LangSmith Tracking
 if os.getenv("LANGCHAIN_API_KEY"):
     os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGCHAIN_API_KEY")
     os.environ['LANGCHAIN_TRACING_V2'] = 'true'
@@ -23,8 +22,7 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-# Available Groq models (all FREE)
-# Includes both native Groq models and OpenAI-compatible models hosted on Groq
+# Available Groq models for free
 GROQ_MODELS = {
     # OpenAI Models (Hosted on Groq - FREE)
     "OpenAI GPT OSS 120B": "openai/gpt-oss-120b",
@@ -48,7 +46,7 @@ GROQ_MODELS = {
 def generate_response(question, api_key, model_name, temperature, max_tokens):
     """Generate response using the selected Groq model"""
     try:
-        # Initialize ChatGroq with the selected model (works for all Groq-hosted models)
+        # Initializing ChatGroq with the selected model (works for all Groq-hosted models)
         llm = ChatGroq(
             api_key=api_key,
             model=model_name,
