@@ -1,200 +1,257 @@
-# LangChain + LangServe Translation API
+# LangChain Projects Repository
 
-This project exposes a simple translation API using LangChain, LangServe, and a Groq-hosted large language model.
-
-The main FastAPI app is defined in `Data-Ingestion/serve.py` and serves a single runnable chain at the path `/chain`.
+A comprehensive collection of LangChain-based applications demonstrating various AI-powered use cases including chatbots, document Q&A, language translation, and more.
 
 ---
 
-## 1. What the API does
+## 📁 Repository Structure
 
-- Uses a Groq LLM via `langchain_groq.ChatGroq`.
-- Wraps it in a LangChain pipeline:
-  - `ChatPromptTemplate` with variables `language` and `text`.
-  - The model.
-  - `StrOutputParser` to return a plain string.
-- Exposes this chain as an HTTP API using LangServe.
-- Endpoint: `POST /chain/invoke`.
-- You send English text and a target language, and it returns the translated text.
+This repository contains multiple independent projects, each showcasing different LangChain capabilities:
 
-The core chain (from `Data-Ingestion/serve.py`):
-
-```python
-generic_temp = "Hay, translate the following english text to {language}"
-prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", generic_temp),
-        ("human", "{text}"),
-    ]
-)
-
-parser = StrOutputParser()
-base_chain = prompt | model | parser
-
-add_routes(
-    app,
-    base_chain,
-    path="/chain",
-)
+```
+LangChain/
+├── IntroSection/              # LangChain basics and middleware concepts
+├── Building-chatBot/          # Basic chatbot implementation
+├── E2E_QA_ChatBot/           # End-to-end Q&A chatbot with multiple models
+├── LanguageTranslation/      # Translation API with LangServe
+└── RAG_document_QA/          # RAG-based document question answering
 ```
 
 ---
 
-## 2. Prerequisites
+## 🚀 Projects Overview
 
-1. **Python environment**
-   - Python 3.10+ recommended.
-   - A virtual environment is strongly recommended.
+### 1. **IntroSection** - LangChain Fundamentals
+Introduction to LangChain concepts, basic chains, and middleware patterns.
 
-2. **Dependencies**
-   - Install from `requirements.txt` in the repo root:
-
-     ```powershell
-     cd "C:\Users\ybalasaraswa\OneDrive - OpenText\Desktop\deep learning\LangChain"
-     python -m venv .myvenv
-     .\.myvenv\Scripts\activate
-     pip install -r requirements.txt
-     ```
-
-3. **Groq API key**
-   - Sign up at Groq and obtain an API key.
-   - Create a `.env` file in the project root (same folder as `requirements.txt`) with:
-
-     ```env
-     GROG_API_KEY=your_groq_api_key_here
-     ```
-
-   - `serve.py` loads this via `dotenv.load_dotenv()` and uses it to configure `ChatGroq`:
-
-     ```python
-     load_dotenv()
-     groq_api_key = os.getenv("GROG_API_KEY")
-     model = ChatGroq(model="openai/gpt-oss-120b", api_key=groq_api_key)
-     ```
+**Contents:**
+- `LangchainIntro.ipynb` - Getting started with LangChain
+- `Middlewares.ipynb` - Understanding LangChain middlewares
 
 ---
 
-## 3. Running the server
+### 2. **Building-chatBot** - Basic ChatBot
+Simple chatbot implementation demonstrating core LangChain chat functionality.
 
-From the project root, run the FastAPI/LangServe app defined in `Data-Ingestion/serve.py`:
+**Contents:**
+- `ChatBot.ipynb` - Basic chatbot notebook
 
+---
+
+### 3. **E2E_QA_ChatBot** - Multi-Model Q&A Chatbot
+A fully-featured Streamlit chatbot supporting multiple AI models from Groq - all 100% FREE!
+
+**Features:**
+- ✅ **9 Different Models**: OpenAI-compatible, LLaMA, Mixtral, Gemma
+- ✅ **Runtime API Key Input**: No .env file needed
+- ✅ **Configurable Parameters**: Temperature, max tokens
+- ✅ **Persistent Chat History**: Session-based conversations
+
+**Quick Start:**
 ```powershell
-cd "C:\Users\ybalasaraswa\OneDrive - OpenText\Desktop\deep learning\LangChain"
-.\.myvenv\Scripts\activate
-python .\LanguageTranslation\serve.py
+cd E2E_QA_ChatBot
+streamlit run app.py
 ```
 
-By default, the app starts on `http://localhost:8000`.
+**Models Available:**
+- OpenAI GPT OSS 120B (OpenAI-compatible)
+- Meta LLaMA 3.3 70B, 3.1 8B/70B, 3.2 1B/3B
+- Mixtral 8x7B
+- Google Gemma 2 9B, 7B
 
-You should see logs similar to:
-
-- Uvicorn starting
-- Application startup complete
-
----
-
-## 4. Using the interactive docs (`/docs`)
-
-1. Open your browser and go to:
-
-   - `http://localhost:8000/docs`
-
-2. You will see the automatically generated Swagger UI.
-
-3. Expand the **POST** endpoint:
-
-   - `/chain/invoke`
-
-4. Click **Try it out**.
-
-5. Replace the default request body with something like:
-
-   ```json
-   {
-     "input": {
-       "language": "French",
-       "text": "Artificial intelligence is changing many industries."
-     },
-     "config": {},
-     "kwargs": {}
-   }
-   ```
-
-6. Click **Execute**.
-
-7. The response body will contain the translated text returned by the chain.
-
-> Note: The Swagger UI may show `"input": "string"` in the schema, but `input` is actually a JSON object. You can safely pass a dict containing `language` and `text` as shown above.
+📖 **[Full Documentation](E2E_QA_ChatBot/README.md)**
 
 ---
 
-## 5. Calling the API from PowerShell
+### 4. **LanguageTranslation** - Translation API
+A FastAPI-based translation service using LangChain and LangServe.
 
-You can also test the API from PowerShell using `Invoke-WebRequest`:
+**Features:**
+- 🌐 **Multi-language Translation**: English to any language
+- ⚡ **REST API**: FastAPI with automatic Swagger docs
+- 🔗 **LangServe Integration**: Easy-to-use API routes
 
+**Quick Start:**
 ```powershell
-$body = @{
-  input = @{
-    language = "Spanish"
-    text     = "Good morning! How are you today?"
-  }
-  config = @{}
-  kwargs = @{}
-} | ConvertTo-Json -Depth 5
-
-Invoke-WebRequest `
-  -Uri "http://localhost:8000/chain/invoke" `
-  -Method POST `
-  -ContentType "application/json" `
-  -Body $body | Select-Object -ExpandProperty Content
+cd LanguageTranslation
+python serve.py
 ```
 
-Or with `curl` on Windows:
+**API Endpoint:**
+- `POST http://localhost:8000/chain/invoke`
 
-```powershell
-curl -X POST "http://localhost:8000/chain/invoke" `
-  -H "Content-Type: application/json" `
-  -d "{""input"": {""language"": ""German"", ""text"": ""Nice to meet you""}, ""config"": {}, ""kwargs"": {}}"
-```
-
----
-
-## 6. Sample document to translate
-
-You can use this sample English paragraph as a test input for `text`:
-
-> Artificial intelligence (AI) is the field of computer science focused on building systems that can perform tasks that normally require human intelligence. Common applications of AI include language translation, image recognition, virtual assistants, and recommendation engines. Modern AI systems often rely on large datasets and powerful models that learn patterns from data instead of being explicitly programmed for every possible situation. As AI continues to improve, it is becoming an important tool in healthcare, finance, education, and many other industries.
-
-Example request body for translating this to French:
-
+**Example Request:**
 ```json
 {
   "input": {
     "language": "French",
-    "text": "Artificial intelligence (AI) is the field of computer science focused on building systems that can perform tasks that normally require human intelligence. Common applications of AI include language translation, image recognition, virtual assistants, and recommendation engines. Modern AI systems often rely on large datasets and powerful models that learn patterns from data instead of being explicitly programmed for every possible situation. As AI continues to improve, it is becoming an important tool in healthcare, finance, education, and many other industries."
+    "text": "Hello, how are you?"
   },
   "config": {},
   "kwargs": {}
 }
 ```
 
+**Interactive Docs:** `http://localhost:8000/docs`
+
 ---
 
-## 7. Implementation details (quick reference)
+### 5. **RAG_document_QA** - Document Q&A with RAG
+Retrieval-Augmented Generation application for asking questions about PDF documents.
 
-- **Entry point**: `Data-Ingestion/serve.py`
-- **Frameworks**:
-  - FastAPI
-  - LangChain + LangServe
-- **Model provider**: Groq via `langchain_groq.ChatGroq`
-- **Main chain**: `ChatPromptTemplate` → `ChatGroq` → `StrOutputParser`
-- **Exposed route**: `/chain` (invoke via `/chain/invoke`)
+**Features:**
+- 📄 **PDF Processing**: Automatic document loading and chunking
+- 🔍 **Semantic Search**: FAISS vector store for similarity search
+- 🤖 **AI-Powered Answers**: Groq ChatGroq model with context
+- 💾 **Ollama Embeddings**: Local embeddings generation
+- 📊 **Context Display**: View source chunks used for answers
 
-If you later add more chains or routes, you can follow the same pattern:
-
-```python
-add_routes(app, some_other_chain, path="/another-path")
+**Quick Start:**
+```powershell
+cd RAG_document_QA
+# Make sure Ollama is running: ollama serve
+streamlit run app.py
 ```
 
-and call them via `POST /another-path/invoke` with the appropriate `input` structure.  
+**Prerequisites:**
+- Ollama installed and running
+- PDF documents in `research_papers/` folder
+- Groq API key
+
+📖 **[Full Documentation](RAG_document_QA/README.md)**
+
+---
+
+## 🛠️ Setup & Installation
+
+### Prerequisites
+- **Python 3.8+** (3.10+ recommended)
+- **Ollama** (for RAG_document_QA project)
+- **Groq API Key** (get it FREE at [console.groq.com](https://console.groq.com))
+
+### Installation Steps
+
+1. **Clone or navigate to the repository:**
+   ```powershell
+   cd "C:\Users\LangChain"
+   ```
+
+2. **Create and activate a virtual environment:**
+   ```powershell
+   python -m venv .myvenv
+   .\.myvenv\Scripts\activate
+   ```
+
+3. **Install dependencies:**
+   ```powershell
+   pip install -r requirements.txt
+   ```
+
+4. **Set up environment variables:**
+   
+   Create a `.env` file in the project root:
+   ```env
+   GROG_API_KEY=your_groq_api_key_here
+   GROQ_API_KEY=your_groq_api_key_here
+   ```
+   
+   > Note: Some projects use `GROG_API_KEY` and others use `GROQ_API_KEY`
+
+5. **Install Ollama (for RAG project):**
+   - Download from [ollama.ai](https://ollama.ai)
+   - Pull required model: `ollama pull llama3.1`
+
+---
+
+## 📦 Dependencies
+
+Core packages used across projects:
+- **LangChain** - Framework for LLM applications
+- **LangServe** - API deployment for LangChain
+- **LangChain-Groq** - Groq model integration
+- **Streamlit** - Web UI framework
+- **FastAPI** - REST API framework
+- **FAISS** - Vector similarity search
+- **Ollama** - Local embeddings
+- **PyPDF** - PDF processing
+
+Install all dependencies:
+```powershell
+pip install -r requirements.txt
+```
+
+---
+
+## 🎯 Quick Start Guide
+
+### For Chatbots (E2E_QA_ChatBot):
+```powershell
+cd E2E_QA_ChatBot
+streamlit run app.py
+# Enter Groq API key in UI
+```
+
+### For Translation API (LanguageTranslation):
+```powershell
+cd LanguageTranslation
+python serve.py
+# Visit http://localhost:8000/docs
+```
+
+### For Document Q&A (RAG_document_QA):
+```powershell
+# Start Ollama first
+ollama serve
+
+# In another terminal
+cd RAG_document_QA
+streamlit run app.py
+```
+
+---
+
+## 🔑 API Keys
+
+All projects use **Groq** models, which are:
+- ✅ **100% FREE** - No credit card required
+- ⚡ **Lightning Fast** - Extremely fast inference
+- 🔄 **Generous Limits** - Suitable for development and production
+
+Get your free API key: [console.groq.com/keys](https://console.groq.com/keys)
+
+---
+
+## 📖 Documentation
+
+Each project has its own detailed README:
+- [E2E_QA_ChatBot Documentation](E2E_QA_ChatBot/README.md)
+- [RAG_document_QA Documentation](RAG_document_QA/README.md)
+
+---
+
+## 🤝 Contributing
+
+Feel free to explore, modify, and extend these projects for your own use cases.
+
+---
+
+## 📝 Notes
+
+- Projects are independent and can be run separately
+- Shared dependencies are in the root `requirements.txt`
+- Environment variables can be set globally in root `.env`
+- Each project may have specific setup requirements (see individual READMEs)
+
+---
+
+## 🐛 Troubleshooting
+
+**Common Issues:**
+
+1. **Import errors:** Make sure virtual environment is activated and dependencies are installed
+2. **API key errors:** Check `.env` file exists with correct key names
+3. **Ollama errors:** Ensure Ollama is running with `ollama serve`
+4. **Port conflicts:** Change ports in respective app files if 8000/8501 are in use
+
+---
 
