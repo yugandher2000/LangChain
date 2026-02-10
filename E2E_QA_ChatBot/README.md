@@ -1,6 +1,6 @@
-# Q&A Chatbot with Groq
+# Q&A Chatbot with Groq - Tools & Agents Integration
 
-A Streamlit-based chatbot that allows users to interact with various LLM models from Groq, including OpenAI-compatible models.
+A Streamlit-based chatbot that allows users to interact with various LLM models from Groq, including OpenAI-compatible models, with integrated tools and agents for real-time information retrieval.
 
 ## Features
 
@@ -97,7 +97,12 @@ streamlit run app.py
 - langchain
 - langchain-groq
 - langchain-core
+- langchain-community
+- langchain-classic
 - python-dotenv
+- arxiv
+- wikipedia
+- langsmith (optional, for tracing)
 
 ## Notes
 

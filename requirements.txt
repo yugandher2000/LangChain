@@ -17,3 +17,7 @@ langserve
 sse_starlette
 requests
 streamlit
+arxiv
+wikipedia
+langsmith
+langchain-classic
