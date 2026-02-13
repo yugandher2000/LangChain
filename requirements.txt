@@ -21,3 +21,5 @@ arxiv
 wikipedia
 langsmith
 langchain-classic
+validators
+unstructured

@@ -14,7 +14,8 @@ LangChain/
 ├── Building-chatBot/          # Basic chatbot implementation
 ├── E2E_QA_ChatBot/           # End-to-end Q&A chatbot with multiple models
 ├── LanguageTranslation/      # Translation API with LangServe
-└── RAG_document_QA/          # RAG-based document question answering
+├── RAG_document_QA/          # RAG-based document question answering
+└── Text-summarization/       # Web page content summarizer
 ```
 
 ---
@@ -122,6 +123,33 @@ streamlit run app.py
 
 ---
 
+### 6. **Text-summarization** - Web Page Content Summarizer
+AI-powered content summarization tool that extracts and summarizes content from web pages.
+
+**Features:**
+- 🌐 **Web Page Summarization**: Summarizes articles, blogs, and documentation
+- 🤖 **ChatGroq AI**: Uses LLaMA 3.3 70B (128K context) for intelligent summarization
+- 🔑 **Runtime API Key**: Enter API key in UI - no .env file required
+- 👁️ **Content Preview**: View original content before summary
+- 📊 **Metadata Display**: Shows source information
+- ⚡ **Handles Long Content**: Automatic chunking for large articles
+
+**Quick Start:**
+```powershell
+cd Text-summarization
+streamlit run app.py
+# Enter Groq API key in sidebar
+# Paste any webpage URL
+```
+
+**Example URLs:**
+- Web page: `https://example.com/article`
+- News articles, blogs, technical docs
+
+📖 **[Full Documentation](Text-summarization/README.md)**
+
+---
+
 ## 🛠️ Setup & Installation
 
 ### Prerequisites
@@ -208,6 +236,14 @@ cd RAG_document_QA
 streamlit run app.py
 ```
 
+### For Content Summarization (Text-summarization):
+```powershell
+cd Text-summarization
+streamlit run app.py
+# Enter Groq API key in sidebar
+# Paste webpage URL
+```
+
 ---
 
 ## 🔑 API Keys
@@ -219,6 +255,12 @@ All projects use **Groq** models, which are:
 
 Get your free API key: [console.groq.com/keys](https://console.groq.com/keys)
 
+**Two Ways to Use API Keys:**
+1. **Runtime Input (Recommended)**: Enter in the UI sidebar when the app starts
+2. **Environment Variable (Optional)**: Set in `.env` file for convenience
+
+Most projects support entering the API key at runtime through the UI!
+
 ---
 
 ## 📖 Documentation
@@ -226,6 +268,7 @@ Get your free API key: [console.groq.com/keys](https://console.groq.com/keys)
 Each project has its own detailed README:
 - [E2E_QA_ChatBot Documentation](E2E_QA_ChatBot/README.md)
 - [RAG_document_QA Documentation](RAG_document_QA/README.md)
+- [Text-summarization Documentation](Text-summarization/README.md)
 
 ---
 
