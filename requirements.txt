@@ -23,3 +23,5 @@ langsmith
 langchain-classic
 validators
 unstructured
+langgraph
+typing-extensions

@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 # Load .env from parent directory
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
 
-groq_api_key = os.getenv("GROG_API_KEY")
+groq_api_key = os.getenv("GROQ_API_KEY")
 
 if not groq_api_key:
     st.error("GROQ_API_KEY not found in environment variables. Please add it to your .env file.")
