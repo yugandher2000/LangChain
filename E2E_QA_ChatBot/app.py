@@ -34,9 +34,6 @@ GROQ_MODELS = {
     "LLaMA 3.2 1B Preview": "llama-3.2-1b-preview",
     "LLaMA 3.2 3B Preview": "llama-3.2-3b-preview",
 
-    # Mixtral Models
-    "Mixtral 8x7B": "mixtral-8x7b-32768",
-
     # Google Gemma Models
     "Gemma 2 9B": "gemma2-9b-it",
     "Gemma 7B": "gemma-7b-it",
